@@ -7,6 +7,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import jakarta.ws.rs.core.Response;
@@ -52,7 +53,7 @@ public class SpamResource {
         return null;
     }
 
-    private List<TestFile> trainAndTest()  {
+    private List<TestFile> trainAndTest() throws FileNotFoundException {
         if (this.detector==null){
             this.detector = new SpamDetector();
         }
