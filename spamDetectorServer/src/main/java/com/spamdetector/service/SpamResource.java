@@ -57,8 +57,8 @@ public class SpamResource {
             this.detector = new SpamDetector();
         }
 
-//        TODO: load the main directory "data" here from the Resources folder
-        File mainDirectory = null;
+//        DONE: load the main directory "data" here from the Resources folder
+        File mainDirectory = new File("../../../resources/data");
         return this.detector.trainAndTest(mainDirectory);
     }
 }
