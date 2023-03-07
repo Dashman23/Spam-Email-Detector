@@ -31,7 +31,12 @@ public class SpamResource {
     public Response getSpamResults() {
 //       TODO: return the test results list of TestFile, return in a Response object
 
-        return null;
+        Response myResp = Response.status(200).header("Access-Control-Allow-Origin", "*")
+                .header("Content-Type", "application/json")
+                //TODO:put value here ===> .entity(val)
+                .build();
+
+        return myResp;
     }
 
     @GET
@@ -40,7 +45,12 @@ public class SpamResource {
     public Response getAccuracy() {
 //      TODO: return the accuracy of the detector, return in a Response object
 
-        return null;
+        Response myResp = Response.status(200).header("Access-Control-Allow-Origin", "*")
+                .header("Content-Type", "application/json")
+                //TODO:put value here ===> .entity(val)
+                .build();
+
+        return myResp;
     }
 
     @GET
@@ -49,7 +59,12 @@ public class SpamResource {
     public Response getPrecision() {
        //      TODO: return the precision of the detector, return in a Response object
 
-        return null;
+        Response myResp = Response.status(200).header("Access-Control-Allow-Origin", "*")
+                .header("Content-Type", "application/json")
+                //TODO:put value here ===> .entity(val)
+                .build();
+
+        return myResp;
     }
 
     private List<TestFile> trainAndTest()  {
