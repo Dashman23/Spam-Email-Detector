@@ -14,7 +14,8 @@
 html {
   color: #222;
   font-size: 1em;
-  line-height: 1.4;
+  line-height: 1.15;
+  font-family: Verdana;
 }
 
 /*
@@ -252,5 +253,77 @@ textarea {
   h3 {
     page-break-after: avoid;
   }
+
+
 }
 
+@font-face {
+  font-family: impostographregular;
+  src: url("impostograph-regular-webfont.woff");
+}
+
+/*
+ Sample code
+ */
+header{
+  background-color: #091F34;
+  width: 100%;
+  height:7%;
+  font-family: impostographregular;
+  font-size: 7vw;
+  text-align: center;
+  color: white;
+}
+
+links{
+  float: none;
+  width: 15%;
+  height: 100%; /* only for demonstration, should be removed */
+  background: #1D3461;
+  color: white;
+
+}
+a:visited {
+  color: #C0CFEC;
+}
+a:link {
+  color: #3864BC;
+}
+a:hover {
+  color: #EFF3FA;
+}
+a:active{
+  color: #030A11;
+}
+
+main{
+  float: none;
+  height: 100%;
+  width: 85%;
+  padding: 10px;
+  background-color: #f1f1f1;
+}
+
+Split{
+  min-height:37.5vw; /* check this for later once everything is done*/
+  width: 100%;
+  display: table;
+  margin: 0px;
+  margin-bottom: 5vw;
+}
+main{display: table-cell}
+
+links{display: table-cell}
+
+footer{
+  background-color: #091F34;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height:5vw;
+  font-family: impostographregular;
+  font-size: 3vw;
+  text-align: center;
+  color: white;
+}
