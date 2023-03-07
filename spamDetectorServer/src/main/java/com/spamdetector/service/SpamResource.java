@@ -1,5 +1,7 @@
 package com.spamdetector.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spamdetector.domain.TestFile;
 import com.spamdetector.util.SpamDetector;
 import jakarta.ws.rs.GET;
@@ -17,40 +19,79 @@ public class SpamResource {
 
 //    your SpamDetector Class responsible for all the SpamDetecting logic
     SpamDetector detector = new SpamDetector();
-
-
+    ObjectMapper mapper = new ObjectMapper();
+    List<TestFile> testFiles;
+    private final double threshold = 0.5;
     SpamResource(){
 //        TODO: load resources, train and test to improve performance on the endpoint calls
         System.out.print("Training and testing the model, please wait");
 
 //      TODO: call  this.trainAndTest();
-
+        this.testFiles = this.trainAndTest();
 
     }
     @GET
     @Produces("application/json")
-    public Response getSpamResults() {
+    public Response getSpamResults() throws JsonProcessingException {
 //       TODO: return the test results list of TestFile, return in a Response object
 
-        return null;
+        Response myResp = Response.status(200).header("Access-Control-Allow-Origin", "*")
+                .header("Content-Type", "application/json")
+                .entity(mapper.writeValueAsString(testFiles))
+                .build();
+
+        return myResp;
     }
 
     @GET
     @Path("/accuracy")
     @Produces("application/json")
-    public Response getAccuracy() {
+    public Response getAccuracy() throws JsonProcessingException {
 //      TODO: return the accuracy of the detector, return in a Response object
+        double correctGuesses = 0;
 
-        return null;
+
+        for(TestFile testFile : testFiles) {
+            if (testFile.getSpamProbability() >= threshold && testFile.getActualClass() == "spam") {
+                correctGuesses++;
+            } else if (testFile.getSpamProbability() < threshold && testFile.getActualClass() == "ham") {
+                correctGuesses++;
+            }
+        }
+        double accuracy = correctGuesses / testFiles.size();
+        Response myResp = Response.status(200).header("Access-Control-Allow-Origin", "*")
+                .header("Content-Type", "application/json")
+                .entity(mapper.writeValueAsString(accuracy))
+                .build();
+
+        return myResp;
     }
 
     @GET
     @Path("/precision")
     @Produces("application/json")
-    public Response getPrecision() {
+    public Response getPrecision() throws JsonProcessingException {
        //      TODO: return the precision of the detector, return in a Response object
 
-        return null;
+        double numTruePositives = 0;
+        double numFalsePositives = 0;
+
+        for (TestFile testFile : testFiles) {
+            if (testFile.getSpamProbability() >= threshold && testFile.getActualClass() == "spam") {
+                numTruePositives++;
+            } else if (testFile.getSpamProbability() >= threshold && testFile.getActualClass() == "ham") {
+                numFalsePositives++;
+            }
+        }
+
+        double precision = (numTruePositives) / (numTruePositives + numFalsePositives);
+
+        Response myResp = Response.status(200).header("Access-Control-Allow-Origin", "*")
+                .header("Content-Type", "application/json")
+                .entity(mapper.writeValueAsString(precision))
+                .build();
+
+        return myResp;
     }
 
     private List<TestFile> trainAndTest() throws FileNotFoundException {
