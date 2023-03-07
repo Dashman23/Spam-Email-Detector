@@ -22,7 +22,7 @@ public class SpamResource {
     ObjectMapper mapper = new ObjectMapper();
     List<TestFile> testFiles;
     private final double threshold = 0.5;
-    SpamResource(){
+    SpamResource() throws FileNotFoundException {
 //        TODO: load resources, train and test to improve performance on the endpoint calls
         System.out.print("Training and testing the model, please wait");
 
