@@ -97,7 +97,7 @@ public class SpamDetector {
 
         ArrayList<TestFile> ProbSpamGivenFile = probabilityCalculator(new ArrayList<>(), spamTestFiles, "spam", ProbSpamGivenWord);
         ProbSpamGivenFile = probabilityCalculator(ProbSpamGivenFile, hamTestFiles, "ham", ProbSpamGivenWord);
-        
+
         return ProbSpamGivenFile;
     }
 
