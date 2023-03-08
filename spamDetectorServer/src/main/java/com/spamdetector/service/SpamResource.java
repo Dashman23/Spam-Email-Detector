@@ -53,9 +53,9 @@ public class SpamResource {
 
 
         for(TestFile testFile : testFiles) {
-            if (testFile.getSpamProbability() >= threshold && testFile.getActualClass() == "spam") {
+            if (testFile.getSpamProbability() >= threshold && testFile.getActualClass().equals("spam")) {
                 correctGuesses++;
-            } else if (testFile.getSpamProbability() < threshold && testFile.getActualClass() == "ham") {
+            } else if (testFile.getSpamProbability() < threshold && testFile.getActualClass().equals("ham")) {
                 correctGuesses++;
             }
         }
@@ -78,9 +78,9 @@ public class SpamResource {
         double numFalsePositives = 0;
 
         for (TestFile testFile : testFiles) {
-            if (testFile.getSpamProbability() >= threshold && testFile.getActualClass() == "spam") {
+            if (testFile.getSpamProbability() >= threshold && testFile.getActualClass().equals("spam")) {
                 numTruePositives++;
-            } else if (testFile.getSpamProbability() >= threshold && testFile.getActualClass() == "ham") {
+            } else if (testFile.getSpamProbability() >= threshold && testFile.getActualClass().equals("ham")) {
                 numFalsePositives++;
             }
         }
