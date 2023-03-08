@@ -7,7 +7,6 @@ function add_record_API(tableID, data) {
                     <td>${data[c].spamProbability}</td>
                     <td>${data[c].actualClass}</td>
                     </tr>`;
-    console.log(c + " out of 2800");
     document.getElementById("chart").innerHTML += tr;
   }
 

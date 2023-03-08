@@ -14,10 +14,6 @@ import java.util.*;
  */
 public class SpamDetector {
 
-    public SpamDetector() {
-        System.out.println("Spamdetector constructor called :)");
-    }
-
     public List<TestFile> trainAndTest(File mainDirectory) throws FileNotFoundException {
 //      TODO: main method of loading the directories and files, training and testing the model
 

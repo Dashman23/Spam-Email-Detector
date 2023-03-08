@@ -101,7 +101,7 @@ public class SpamResource {
         }
 
 //        DONE: load the main directory "data" here from the Resources folder
-        File mainDirectory = new File("/Users/dashman/Desktop/Year_2/Software_Dev/Project/w23-csci2020u-assignment01-its-shrimple-rly/spamDetectorServer/src/main/resources/data");
+        File mainDirectory = new File("C:/Users/danza/Desktop/SoftwareDev/Assignment1/w23-csci2020u-assignment01-its-shrimple-rly/spamDetectorServer/src/main/resources/data");
         return this.detector.trainAndTest(mainDirectory);
     }
 }
