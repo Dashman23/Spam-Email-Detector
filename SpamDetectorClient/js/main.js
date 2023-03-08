@@ -1,20 +1,19 @@
 // TODO: onload function should retrieve the data needed to populate the UI
 function add_record_API(tableID, data) {
 
-  for (c in data.testFiles){
+  for (c in data){
     const tr = `<tr>
-                    <td>${data.testFiles[c].name}</td>
-                    <td>${data.testFiles[c].id}</td>
-                    <td>${data.testFiles[c].gpa}</td>
+                    <td>${data[c].file}</td>
+                    <td>${data[c].spamProbability}</td>
+                    <td>${data[c].actualClass}</td>
                     </tr>`;
-
+    console.log(c + " out of 2800");
     document.getElementById("chart").innerHTML += tr;
   }
 
-  console.log(data);
 }
 
-let callURL = "http://localhost:8080/lab5-1.0/api/students/json";
+let callURL = "http://localhost:8080/spamDetector-1.0/api/spam";
 
 function requestData(callURL){
   fetch(callURL, {

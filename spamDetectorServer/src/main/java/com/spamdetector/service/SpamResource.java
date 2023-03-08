@@ -36,7 +36,7 @@ public class SpamResource {
     public Response getSpamResults() throws JsonProcessingException {
 //       TODO: return the test results list of TestFile, return in a Response object
 
-        Response myResp = Response.status(200).header("Access-Control-Allow-Origin", "*")
+        Response myResp = Response.status(200).header("Access-Control-Allow-Origin", "http://localhost:63342")
                 .header("Content-Type", "application/json")
                 .entity(mapper.writeValueAsString(testFiles))
                 .build();
@@ -101,7 +101,7 @@ public class SpamResource {
         }
 
 //        DONE: load the main directory "data" here from the Resources folder
-        File mainDirectory = new File("C:/Users/danza/Desktop/SoftwareDev/Assignment1/w23-csci2020u-assignment01-its-shrimple-rly/spamDetectorServer/src/main/resources/data");
+        File mainDirectory = new File("/Users/dashman/Desktop/Year_2/Software_Dev/Project/w23-csci2020u-assignment01-its-shrimple-rly/spamDetectorServer/src/main/resources/data");
         return this.detector.trainAndTest(mainDirectory);
     }
 }
