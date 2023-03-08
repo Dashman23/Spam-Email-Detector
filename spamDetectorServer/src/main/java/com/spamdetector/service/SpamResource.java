@@ -10,6 +10,7 @@ import jakarta.ws.rs.Produces;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.List;
 
 import jakarta.ws.rs.core.Response;
@@ -22,11 +23,12 @@ public class SpamResource {
     ObjectMapper mapper = new ObjectMapper();
     List<TestFile> testFiles;
     private final double threshold = 0.5;
+
     public SpamResource() throws FileNotFoundException {
-//        TODO: load resources, train and test to improve performance on the endpoint calls
+//      DONE: load resources, train and test to improve performance on the endpoint calls
         System.out.print("Training and testing the model, please wait");
 
-//      TODO: call  this.trainAndTest();
+//      DONE: call this.trainAndTest();
         this.testFiles = this.trainAndTest();
     }
     @GET
@@ -99,7 +101,7 @@ public class SpamResource {
         }
 
 //        DONE: load the main directory "data" here from the Resources folder
-        File mainDirectory = new File("../../../resources/data");
+        File mainDirectory = new File("C:/Users/danza/Desktop/SoftwareDev/Assignment1/w23-csci2020u-assignment01-its-shrimple-rly/spamDetectorServer/src/main/resources/data");
         return this.detector.trainAndTest(mainDirectory);
     }
 }

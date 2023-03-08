@@ -14,6 +14,10 @@ import java.util.*;
  */
 public class SpamDetector {
 
+    public SpamDetector() {
+        System.out.println("Spamdetector constructor called :)");
+    }
+
     public List<TestFile> trainAndTest(File mainDirectory) throws FileNotFoundException {
 //      TODO: main method of loading the directories and files, training and testing the model
 
@@ -74,8 +78,11 @@ public class SpamDetector {
         HashMap<String, Double> probSpamGivenWord = new HashMap<>();
         for (String word : trainSpamFreq.keySet()) {
             double probWordGivenSpam = ((double)trainSpamFreq.get(word))/((double)spamCount);
-            double probWordGivenHam = ((double)trainHamFreq.get(word))/((double)hamCount);
-            probSpamGivenWord.put(word, probWordGivenSpam/(probWordGivenSpam+probWordGivenHam));
+            double probWordGivenHam = 0.0;
+            if (trainHamFreq.get(word) != null) {
+                probWordGivenHam = ((double)trainHamFreq.get(word))/((double)hamCount);
+            }
+            probSpamGivenWord.put(word, (probWordGivenSpam/(probWordGivenSpam+probWordGivenHam)));
         }
         for (String word : trainHamFreq.keySet()) {
             if (!probSpamGivenWord.containsKey(word)) {
@@ -95,7 +102,8 @@ public class SpamDetector {
         File[] spamTestFiles = testSpamDir.listFiles();
         File[] hamTestFiles = testHamDir.listFiles();
 
-        ArrayList<TestFile> ProbSpamGivenFile = probabilityCalculator(new ArrayList<>(), spamTestFiles, "spam", ProbSpamGivenWord);
+        ArrayList<TestFile> ProbSpamGivenFile = new ArrayList<>();
+        ProbSpamGivenFile = probabilityCalculator(ProbSpamGivenFile, spamTestFiles, "spam", ProbSpamGivenWord);
         ProbSpamGivenFile = probabilityCalculator(ProbSpamGivenFile, hamTestFiles, "ham", ProbSpamGivenWord);
 
         return ProbSpamGivenFile;
@@ -109,7 +117,9 @@ public class SpamDetector {
                 while (scanner.hasNext()) {
                     String word = (scanner.next()).toLowerCase();
                     if (ProbSpamGivenWord.containsKey(word)) {
-                        sum += Math.log(1-ProbSpamGivenWord.get(word)) - Math.log(ProbSpamGivenWord.get(word));
+                        if (ProbSpamGivenWord.get(word) != 0.0 && ProbSpamGivenWord.get(word) != 1.0) {
+                            sum += Math.log(1-ProbSpamGivenWord.get(word)) - Math.log(ProbSpamGivenWord.get(word));
+                        }
                     }
                     //else we do not consider this word in our algorithm since we did not encounter it in training
                 }
