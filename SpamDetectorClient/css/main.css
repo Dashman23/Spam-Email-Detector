@@ -16,7 +16,7 @@ html {
   font-size: 1em;
   line-height: 1.15;
   font-family: Verdana;
-  overflow: hidden;
+
 }
 
 /*
@@ -291,7 +291,7 @@ links{
   height: 100%; /* only for demonstration, should be removed */
   background: #1D3461;
   color: white;
-  position: absolute;
+  text-anchor: start;
 
 }
 a:visited {
@@ -344,7 +344,7 @@ links{display: table-cell}
 
 footer{
   background-color: #091F34;
-  position: absolute;
+  position: sticky;
   bottom: 0%;
   left: 0;
   width: 100%;
