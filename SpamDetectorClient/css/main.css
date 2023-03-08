@@ -303,6 +303,11 @@ main{
   padding: 10px;
   background-color: #A2B9E2;
 }
+.table_h{
+  background-color: #0A121F;
+  color: white;
+}
+
 
 Split{
   min-height:37.5vw; /* check this for later once everything is done*/
@@ -317,13 +322,25 @@ links{display: table-cell}
 
 footer{
   background-color: #091F34;
-  position: fixed;
+  position: sticky;
   bottom: 0;
   left: 0;
   width: 100%;
-  height:5vw;
+  height:10vw;
   font-family: impostographregular;
   font-size: 3vw;
   text-align: center;
   color: white;
+}
+
+.table_h{
+  background-color: #0A121F;
+  color: white;
+}
+
+tr:nth-child(even) {
+  background-color: #CBE0F6;
+}
+tr:nth-child(odd) {
+  background-color: #BAD5F3;
 }
