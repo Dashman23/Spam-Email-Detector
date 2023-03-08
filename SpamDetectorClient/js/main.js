@@ -11,7 +11,7 @@ function add_record_API(tableID, data) {
     let classCell = newRow.insertCell(2);
 
     let fileText = document.createTextNode(data[c].file); //creates values to be displayed in the cell
-    let probText = document.createTextNode(data[c].spamProbability);
+    let probText = document.createTextNode(data[c].spamProbability + "%");
     let classText = document.createTextNode(data[c].actualClass);
 
     fileCell.appendChild(fileText); //appends textnodes to each cell

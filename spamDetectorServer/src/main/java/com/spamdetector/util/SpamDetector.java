@@ -120,7 +120,7 @@ public class SpamDetector {
                     //else we do not consider this word in our algorithm since we did not encounter it in training
                 }
                 double currentFileSpamProb = 1/(1 + (Math.pow(Math.E, sum)));
-                probSpamGivenFile.add(new TestFile(file.getName(), currentFileSpamProb, actualClass));
+                probSpamGivenFile.add(new TestFile(file.getName(), currentFileSpamProb*100, actualClass));
             }
         }
         return probSpamGivenFile;
