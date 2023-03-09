@@ -21,7 +21,25 @@ function add_record_API(tableID, data) {
 
 }
 
+
 let callURL = "http://localhost:8080/spamDetector-1.0/api/spam";
+function getAccPre(element) {
+  fetch(callURL + "/" + element, {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+    },
+  })
+    .then(response => response.json())
+    .then(response => giveString(element, response) /*input the function to add this to textbox*/)
+    .catch((err) => {
+      console.log("something went wrong: " + err);
+    });
+}
+
+function giveString(element, data) {
+    document.getElementById(element).value = data*100;
+}
 
 function requestData(callURL){
   fetch(callURL, {
@@ -36,36 +54,37 @@ function requestData(callURL){
       console.log("something went wrong: " + err);
     });
 
-  fetch(callURL + "/precision", {
-    method: 'GET',
-    headers: {
-      'Accept': 'application/json',
-    },
-  })
-    .then(response => response.json())
-    .then(response => null /*input the function to add this to textbox*/)
-    .catch((err) => {
-      console.log("something went wrong: " + err);
-    });
+  // fetch(callURL + "/precision", {
+  //   method: 'GET',
+  //   headers: {
+  //     'Accept': 'application/json',
+  //   },
+  // })
+  //   .then(response => response.json())
+  //   .then(response => null /*input the function to add this to textbox*/)
+  //   .catch((err) => {
+  //     console.log("something went wrong: " + err);
+  //   });
 
-  fetch(callURL + "/accuracy", {
-    method: 'GET',
-    headers: {
-      'Accept': 'application/json',
-    },
-  })
-    .then(response => response.json())
-    .then(response => null /*input the function to add this to textbox*/)
-    .catch((err) => {
-      console.log("something went wrong: " + err);
-    });
+  // fetch(callURL + "/accuracy", {
+  //   method: 'GET',
+  //   headers: {
+  //     'Accept': 'application/json',
+  //   },
+  // })
+  //   .then(response => response.json())
+  //   .then(response => null /*input the function to add this to textbox*/)
+  //   .catch((err) => {
+  //     console.log("something went wrong: " + err);
+  //   });
 
 
 }
 
 (function () {
   requestData(callURL);
-
+  getAccPre("precision");
+  getAccPre("accuracy");
 })();
 
 
