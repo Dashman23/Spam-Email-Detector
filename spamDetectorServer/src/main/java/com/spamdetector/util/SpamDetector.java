@@ -18,10 +18,21 @@ public class SpamDetector {
 //      TODO: main method of loading the directories and files, training and testing the model
 
         File spamDir = new File(mainDirectory, "/train/spam");
-        File hamDir = new File(mainDirectory, "/train/ham");
+        File ham1Dir = new File(mainDirectory, "/train/ham");
+        File ham2Dir = new File(mainDirectory, "/train/ham2");
 
         File[] spamFiles = spamDir.listFiles();
-        File[] hamFiles = hamDir.listFiles();
+        File[] ham1Files = ham1Dir.listFiles();
+        File[] ham2Files = ham2Dir.listFiles();
+
+        int count = 0;
+        File[] hamFiles = new File[ham1Files.length + ham2Files.length];
+        for (File ham1File : ham1Files) {
+            hamFiles[count++] = ham1File;
+        }
+        for (File ham2File : ham2Files) {
+            hamFiles[count++] = ham2File;
+        }
 
         HashCount spam = createWordMap(spamFiles);
         HashCount ham = createWordMap(hamFiles);
@@ -115,6 +126,12 @@ public class SpamDetector {
                     if (ProbSpamGivenWord.containsKey(word)) {
                         if (ProbSpamGivenWord.get(word) != 0.0 && ProbSpamGivenWord.get(word) != 1.0) {
                             sum += Math.log(1-ProbSpamGivenWord.get(word)) - Math.log(ProbSpamGivenWord.get(word));
+                        }
+                        else if (ProbSpamGivenWord.get(word) == 0.0) {
+                            sum += Math.log(1-0.15) - Math.log(0.15);
+                        }
+                        else {
+                            sum += Math.log(1-0.85) - Math.log(0.85);
                         }
                     }
                     //else we do not consider this word in our algorithm since we did not encounter it in training

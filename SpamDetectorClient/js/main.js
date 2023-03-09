@@ -31,7 +31,7 @@ function getAccPre(element) {
     },
   })
     .then(response => response.json())
-    .then(response => giveString(element, response) /*input the function to add this to textbox*/)
+    .then(response => giveString(element, response))
     .catch((err) => {
       console.log("something went wrong: " + err);
     });
@@ -53,31 +53,6 @@ function requestData(callURL){
     .catch((err) => {
       console.log("something went wrong: " + err);
     });
-
-  // fetch(callURL + "/precision", {
-  //   method: 'GET',
-  //   headers: {
-  //     'Accept': 'application/json',
-  //   },
-  // })
-  //   .then(response => response.json())
-  //   .then(response => null /*input the function to add this to textbox*/)
-  //   .catch((err) => {
-  //     console.log("something went wrong: " + err);
-  //   });
-
-  // fetch(callURL + "/accuracy", {
-  //   method: 'GET',
-  //   headers: {
-  //     'Accept': 'application/json',
-  //   },
-  // })
-  //   .then(response => response.json())
-  //   .then(response => null /*input the function to add this to textbox*/)
-  //   .catch((err) => {
-  //     console.log("something went wrong: " + err);
-  //   });
-
 
 }
 
