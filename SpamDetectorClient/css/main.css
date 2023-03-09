@@ -16,7 +16,7 @@ html {
   font-size: 1em;
   line-height: 1.15;
   font-family: Verdana;
-
+  overflow-x: hidden;
 }
 
 /*
@@ -287,7 +287,7 @@ header{
 
 links{
   float: none;
-  width: 10%;
+  width: 20%;
   height: 100%; /* only for demonstration, should be removed */
   background: #1D3461;
   color: white;
@@ -315,7 +315,7 @@ main{
   float: none;
   height: 100%;
   width: 90%;
-  padding: 10px 10px 0 200px;
+  padding: 10px 10px 0 100px;
   background-color: #A2B9E2;
 }
 .table_h{
