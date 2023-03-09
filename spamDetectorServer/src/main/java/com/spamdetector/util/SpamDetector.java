@@ -19,19 +19,25 @@ public class SpamDetector {
 
         File spamDir = new File(mainDirectory, "/train/spam");
         File hamDir = new File(mainDirectory, "/train/ham");
+        File ham2Dir = new File(mainDirectory, "/train/ham2");
 
         File[] spamFiles = spamDir.listFiles();
         File[] hamFiles = hamDir.listFiles();
+        File[] ham2Files = ham2Dir.listFiles();
+
 
         HashCount spam = createWordMap(spamFiles);
         HashCount ham = createWordMap(hamFiles);
+        HashCount ham2 = createWordMap(ham2Files);
         //HashCount class has two instance variables, so we can return the count and hashmap
         HashMap<String, Integer> trainSpamFreq = spam.hashMap;
         int spamFileCount = spam.count;
         HashMap<String, Integer> trainHamFreq = ham.hashMap;
         int hamFileCount = ham.count;
+        HashMap<String, Integer> trainHam2Freq = ham2.hashMap;
+        int ham2FileCount = ham2.count;
 
-        HashMap<String, Double> ProbSpamGivenWord = calculateProbSpamGivenWord(trainSpamFreq, trainHamFreq, spamFileCount, hamFileCount);
+        HashMap<String, Double> ProbSpamGivenWord = calculateProbSpamGivenWord(trainSpamFreq, trainHamFreq, trainHam2Freq , spamFileCount, hamFileCount, ham2FileCount);
 
         return calculateProbSpamGivenFile(mainDirectory, ProbSpamGivenWord);
     }
@@ -70,7 +76,7 @@ public class SpamDetector {
         return new HashCount(masterMap, count);
     }
 
-    public HashMap<String, Double> calculateProbSpamGivenWord(HashMap<String, Integer> trainSpamFreq, HashMap<String, Integer> trainHamFreq, int spamCount, int hamCount) {
+    public HashMap<String, Double> calculateProbSpamGivenWord(HashMap<String, Integer> trainSpamFreq, HashMap<String, Integer> trainHamFreq, HashMap<String, Integer> trainHam2Freq, int spamCount, int hamCount, int ham2Count) {
         HashMap<String, Double> probSpamGivenWord = new HashMap<>();
         for (String word : trainSpamFreq.keySet()) {
             double probWordGivenSpam = ((double)trainSpamFreq.get(word))/((double)spamCount);
@@ -84,6 +90,13 @@ public class SpamDetector {
             if (!probSpamGivenWord.containsKey(word)) {
                 probSpamGivenWord.put(word, 0.0);
                 //in this case, if the word shows up in our ham frequency hashmap but not our spam frequency hashmap,
+                //then our formula simplifies to 0.
+            }
+        }
+        for (String word : trainHam2Freq.keySet()) {//LOOK OVER DANIEL I HAVE NO CLUE IF THIS IS RIGHT
+            if (!probSpamGivenWord.containsKey(word)) {
+                probSpamGivenWord.put(word, 0.0);
+                //in this case, if the word shows up in our ham2 frequency hashmap but not our spam frequency hashmap,
                 //then our formula simplifies to 0.
             }
         }
