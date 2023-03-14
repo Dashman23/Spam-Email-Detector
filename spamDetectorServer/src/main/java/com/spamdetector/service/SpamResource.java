@@ -10,6 +10,8 @@ import jakarta.ws.rs.Produces;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
@@ -101,7 +103,13 @@ public class SpamResource {
         }
 
 //        DONE: load the main directory "data" here from the Resources folder
-        File mainDirectory = new File("/Users/dashman/Desktop/Year_2/Software_Dev/Project/w23-csci2020u-assignment01-its-shrimple-rly/spamDetectorServer/src/main/resources/data");
+        URL url = this.getClass().getClassLoader().getResource("/data");
+        File mainDirectory = null;
+        try {
+            mainDirectory = new File(url.toURI());
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
         return this.detector.trainAndTest(mainDirectory);
     }
 }
