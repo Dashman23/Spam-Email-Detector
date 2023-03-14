@@ -14,9 +14,9 @@ import java.util.*;
 public class SpamDetector {
 
     /**
-     * @param mainDirectory the directory that contains your train and test email folders
-     * @return List of TestFile objects containing the probability that each of the emails in the test
-     * folder are spam
+     * @param mainDirectory File, the directory that contains your train and test email folders.
+     * @return List (TestFile), TestFile objects containing the probability that each of the emails in the test
+     * folder are spam.
      */
     public List<TestFile> trainAndTest(File mainDirectory) throws FileNotFoundException {
 //      TODO: main method of loading the directories and files, training and testing the model
@@ -42,15 +42,12 @@ public class SpamDetector {
         }
 
         //creating a word map of all words in the spam and ham emails, and in how many emails they appear
-        //HashCount class has two instance variables, so we can return the count and hashmap
-        HashCount spam = createWordMap(spamFiles);
-        HashCount ham = createWordMap(hamFiles);
+        HashMap<String, Integer> trainSpamFreq = createWordMap(spamFiles);
+        HashMap<String, Integer> trainHamFreq = createWordMap(hamFiles);
 
-        //unpacking the variables from the custom class
-        HashMap<String, Integer> trainSpamFreq = spam.hashMap;
-        int spamFileCount = spam.count;
-        HashMap<String, Integer> trainHamFreq = ham.hashMap;
-        int hamFileCount = ham.count;
+        //number of files in each folder, used in calculations later
+        int spamFileCount = spamFiles.length;
+        int hamFileCount = hamFiles.length;
 
         //calculating the probability a file is spam given a word
         HashMap<String, Double> ProbSpamGivenWord = calculateProbSpamGivenWord(trainSpamFreq, trainHamFreq, spamFileCount, hamFileCount);
@@ -60,16 +57,13 @@ public class SpamDetector {
     }
 
     /**
-     * @param files a list of files for which
-     * @return a HashCount object, containing of all the words in a file array, and in how many files they appear in,
-     *  as well as how many files are in the array
+     * @param files File[],  list of files for which we will return the corresponding word map.
+     * @return Hashmap (String, Integer), map containing of all the words in a file array, and in how many files they appear.
      */
-    public HashCount createWordMap(File[] files) throws FileNotFoundException {
+    public HashMap<String, Integer> createWordMap(File[] files) throws FileNotFoundException {
         //this will be the full map for each directory, storing (spam or ham)
         HashMap<String, Integer> masterMap = new HashMap<>();
-        int count = 0;
         for (File file : files) {
-            count += 1;
             HashMap<String, Integer> currentFileMap = new HashMap<>();
             //this currentFileMap will contain a 1 for every string it contains
             if (file.exists()) {
@@ -86,6 +80,7 @@ public class SpamDetector {
                     }
                 }
             }
+            //for each file, we will add our values to the master map, containing words from all files
             for (String key : currentFileMap.keySet()) {
                 if (!masterMap.containsKey(key)) {
                     masterMap.put(key, 1);
@@ -95,12 +90,25 @@ public class SpamDetector {
                 }
             }
         }
-        //return HashCount object (custom class) which has two instance variables
-        return new HashCount(masterMap, count);
+        //return our final map
+        return masterMap;
     }
 
+    /**
+     * @param trainSpamFreq a Hashmap (String, Integer), containing of all the words in a spam file array, and in how many
+     * files they appear.
+     * @param trainHamFreq a Hashmap (String, Integer), containing of all the words in a ham file array, and in how many
+     * files they appear.
+     * @param hamCount the number of ham files used to generate the hashmap trainHamFreq
+     * @param spamCount the number of spam files used to generate the hashmap trainHamFreq
+     * @return a Hashmap (String, Double), containing all the probabilities of spam given a single word (for all
+     * words in either Hashmap provided
+     */
     public HashMap<String, Double> calculateProbSpamGivenWord(HashMap<String, Integer> trainSpamFreq, HashMap<String, Integer> trainHamFreq, int spamCount, int hamCount) {
         HashMap<String, Double> probSpamGivenWord = new HashMap<>();
+
+        //iterating through the spam words, and calculating the probability of spam given said word using a
+        //simplified bayesian formula (given in the assignment instructions)
         for (String word : trainSpamFreq.keySet()) {
             double probWordGivenSpam = ((double)trainSpamFreq.get(word))/((double)spamCount);
             double probWordGivenHam = 0.0;
@@ -109,24 +117,33 @@ public class SpamDetector {
             }
             probSpamGivenWord.put(word, (probWordGivenSpam/(probWordGivenSpam+probWordGivenHam)));
         }
+        //iterating through the words found in ham files
         for (String word : trainHamFreq.keySet()) {
+            //if the word was already covered, we do not consider it
             if (!probSpamGivenWord.containsKey(word)) {
                 probSpamGivenWord.put(word, 0.0);
                 //in this case, if the word shows up in our ham frequency hashmap but not our spam frequency hashmap,
-                //then our formula simplifies to 0.
+                //then our formula simplifies to 0, so we can save computations here
             }
         }
         return probSpamGivenWord;
     }
 
+    /**
+     * @param mainDirectory File, the directory that contains test files.
+     * @param ProbSpamGivenWord HashMap (String, Double), the probability of spam given each word.
+     * @return ArrayList (TestFile), ArrayList of TestFile objects, which contain the probability that each file is spam.
+     */
     public ArrayList<TestFile> calculateProbSpamGivenFile(File mainDirectory, HashMap<String, Double> ProbSpamGivenWord) throws FileNotFoundException {
 
         File testSpamDir = new File(mainDirectory, "/test/spam");
         File testHamDir = new File(mainDirectory, "/test/ham");
 
+        //gathering all files in test directories
         File[] spamTestFiles = testSpamDir.listFiles();
         File[] hamTestFiles = testHamDir.listFiles();
 
+        //this array will be passed in to probability calculator function, modified, and returned
         ArrayList<TestFile> ProbSpamGivenFile = new ArrayList<>();
         ProbSpamGivenFile = probabilityCalculator(ProbSpamGivenFile, spamTestFiles, "spam", ProbSpamGivenWord);
         ProbSpamGivenFile = probabilityCalculator(ProbSpamGivenFile, hamTestFiles, "ham", ProbSpamGivenWord);
@@ -134,26 +151,39 @@ public class SpamDetector {
         return ProbSpamGivenFile;
     }
 
+    /**
+     * @param files File[], the files that will be considered.
+     * @param actualClass String, the actual class of the list of files passed in.
+     * @param probSpamGivenFile ArrayList (TestFile), the array list which we will add our values to, and later return.
+     * @param ProbSpamGivenWord HashMap (String, Double), the probability of spam given a word.
+     * @return the modified ArrayList of TestFile objects which was passed in.
+     */
     public ArrayList<TestFile> probabilityCalculator (ArrayList<TestFile> probSpamGivenFile, File[] files, String actualClass, HashMap<String, Double> ProbSpamGivenWord) throws FileNotFoundException {
         for (File file : files) {
             if (file.exists()) {
+                //iterating through each word in the file, parsing by spaces
                 Scanner scanner = new Scanner(file);
                 double sum = 0;
                 while (scanner.hasNext()) {
+                    //convert to lower case to ignore case in calculations
                     String word = (scanner.next()).toLowerCase();
                     if (ProbSpamGivenWord.containsKey(word)) {
+                        //log of 0 or 1 will mess up the calculation, and a single word will define the file
                         if (ProbSpamGivenWord.get(word) != 0.0 && ProbSpamGivenWord.get(word) != 1.0) {
                             sum += Math.log(1-ProbSpamGivenWord.get(word)) - Math.log(ProbSpamGivenWord.get(word));
                         }
+                        //instead of 0 and 1, we use values close, but far enough away from 0 and 1 that they are not
+                        //overpowering the spam probability of the file
                         else if (ProbSpamGivenWord.get(word) == 0.0) {
-                            sum += Math.log(1-0.15) - Math.log(0.15);
+                            sum += Math.log(1-0.16) - Math.log(0.16);
                         }
                         else {
-                            sum += Math.log(1-0.85) - Math.log(0.85);
+                            sum += Math.log(1-0.84) - Math.log(0.84);
                         }
                     }
                     //else we do not consider this word in our algorithm since we did not encounter it in training
                 }
+                //now we calculate the final probability that the file is spam, and multiply it by 100 to be displayed as %
                 double currentFileSpamProb = 1/(1 + (Math.pow(Math.E, sum)));
                 probSpamGivenFile.add(new TestFile(file.getName(), currentFileSpamProb*100, actualClass));
             }
@@ -161,20 +191,15 @@ public class SpamDetector {
         return probSpamGivenFile;
     }
 
+    /**
+     * @param word String, the string which you want to check.
+     * @return Boolean, whether the given string is a word.
+     */
     private boolean isWord(String word) {
         if (word == null) {
             return false;
         }
         String pattern = "^[a-zA-Z]*$";
         return word.matches(pattern);
-    }
-}
-
-class HashCount {
-    HashMap<String, Integer> hashMap;
-    int count;
-    HashCount(HashMap<String, Integer> hashMap, int count) {
-        this.hashMap = hashMap;
-        this.count = count;
     }
 }
