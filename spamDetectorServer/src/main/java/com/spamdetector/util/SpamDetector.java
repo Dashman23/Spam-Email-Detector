@@ -175,7 +175,7 @@ public class SpamDetector {
                         //instead of 0 and 1, we use values close, but far enough away from 0 and 1 that they are not
                         //overpowering the spam probability of the file
                         else if (ProbSpamGivenWord.get(word) == 0.0) {
-                            sum += Math.log(1-0.12) - Math.log(0.12);
+                            sum += Math.log(1-0.11) - Math.log(0.11);
                         }
                         else {
                             sum += Math.log(1-0.99999998) - Math.log(0.99999998);

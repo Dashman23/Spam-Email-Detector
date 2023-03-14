@@ -24,7 +24,7 @@ public class SpamResource {
     SpamDetector detector = new SpamDetector();
     ObjectMapper mapper = new ObjectMapper();
     List<TestFile> testFiles;
-    private final double threshold = 0.5;
+    private final double threshold = 1;
 
     public SpamResource() throws FileNotFoundException {
 //      DONE: load resources, train and test to improve performance on the endpoint calls
@@ -51,7 +51,7 @@ public class SpamResource {
     @Produces("application/json")
     public Response getAccuracy() throws JsonProcessingException {
 //      DONE: return the accuracy of the detector, return in a Response object
-        // calculate accuracy bu divding the number of correct guesses by number of total guesses
+        // calculate accuracy by dividing the number of correct guesses by number of total guesses
         // a guess is considered correct if the spam probability is above the threshold and the file is actually spam or the spam likelyhood percent
         // is less than the threshold and the file is actually ham
         double correctGuesses = 0;
