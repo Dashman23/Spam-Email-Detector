@@ -36,7 +36,7 @@ public class SpamResource {
     @GET
     @Produces("application/json")
     public Response getSpamResults() throws JsonProcessingException {
-//       TODO: return the test results list of TestFile, return in a Response object
+//       DONE: return the test results list of TestFile, return in a Response object
 
         Response myResp = Response.status(200).header("Access-Control-Allow-Origin", "http://localhost:63342")
                 .header("Content-Type", "application/json")
@@ -50,10 +50,11 @@ public class SpamResource {
     @Path("/accuracy")
     @Produces("application/json")
     public Response getAccuracy() throws JsonProcessingException {
-//      TODO: return the accuracy of the detector, return in a Response object
+//      DONE: return the accuracy of the detector, return in a Response object
+        // calculate accuracy bu divding the number of correct guesses by number of total guesses
+        // a guess is considered correct if the spam probability is above the threshold and the file is actually spam or the spam likelyhood percent
+        // is less than the threshold and the file is actually ham
         double correctGuesses = 0;
-
-
         for(TestFile testFile : testFiles) {
             if (testFile.getSpamProbability() >= threshold && testFile.getActualClass().equals("spam")) {
                 correctGuesses++;
@@ -74,8 +75,10 @@ public class SpamResource {
     @Path("/precision")
     @Produces("application/json")
     public Response getPrecision() throws JsonProcessingException {
-       //      TODO: return the precision of the detector, return in a Response object
-
+       //      DONE: return the precision of the detector, return in a Response object
+        // calculate precision by doing the number of true positives divided by the sum of false positives and true positives
+        // a true positive is counted when the spam probability is above the threshold and the file is actually spam
+        // a false positive is counted when the spam probability is above the treshold and the file is actually ham
         double numTruePositives = 0;
         double numFalsePositives = 0;
 

@@ -15,8 +15,8 @@ html {
   color: #222;
   font-size: 1em;
   line-height: 1.15;
-  font-family: Verdana;
-  overflow-x: hidden;
+  font-family: Verdana; /* Changed default font to Verdana */
+  overflow-x: hidden;   /* Hid the x-axis scroller so user can not move side to side*/
 }
 
 /*
@@ -259,43 +259,76 @@ textarea {
 
 }
 
+/* All code from now was not in boiler-plate code */
+
+/* Custom Font was initialized */
 @font-face {
   font-family: impostographregular;
   src: url("impostograph-regular-webfont.woff");
 }
 
-/*
- Sample code
- */
+/* Changed h1 font size */
 h1{
   font-size: 25px;
   margin-bottom: 0;
 }
 
+/* Basic header */
 header{
-  background-image: url("amongstars.jpeg");
-  background-repeat: no-repeat;
+  background-image: url("amongstars.jpeg"); /* Added a Background Image */
+  background-repeat: no-repeat;             /* Changed Background Settings to fit page */
   background-attachment: fixed;
   background-size: contain;
-  width: 100%;
+  width: 100%;                              /* Changed proportions of header for page */
   height:7%;
-  font-family: impostographregular;
+  font-family: impostographregular;         /* Imported Custom Font and set settings for page*/
   font-size: 7vw;
   text-align: center;
   color: white;
 }
 
+/* This tag is meant to keep links and main together side by side
+   We display Split as a table so the other two tags are then presented
+   as a table cell (side by side) */
+Split {
+  min-height: 500vw;/* Sets the size for the total proportions of links and main together so they line up properly */
+  width: 100%;
+  display: table;
+  margin: 0px;
+  margin-bottom: 5vw;
+
+}
+
+/* This tag is in the split tag and acts as the left table cell,
+   This shows our Dashboard and about us pages which can be
+   navigated to with the hyperlinks */
 links{
+  display: table-cell;/* Basic settings for tag links, anchored text at start so the links don't shift between pages */
   float: none;
-  width: 20%;
-  height: 100%; /* only for demonstration, should be removed */
+  width: 7%;
+  height: 100%;
   background: #1D3461;
   color: white;
   text-anchor: start;
 
 }
+
+/*Basic main tag but it is appended to the right side
+ of the table as it is part of split on both html pages.
+ Has the main portions of both pages.*/
+main{
+  display: table-cell;
+  float: none;
+  height: 100%;
+  width: 90%;
+  padding: 10px 10px 0 100px;
+  background-color: #A2B9E2;
+}
+
+/* Changed all hyperlink colours to best fits the
+   the theme of the page.*/
 a:visited {
-  color: #C0CFEC;
+  color: #296ae3;
   text-decoration: none;
 }
 a:link {
@@ -303,7 +336,7 @@ a:link {
   text-decoration: none;
 }
 a:hover {
-  color: #EFF3FA;
+  color: #0059ff;
   text-decoration: none;
 }
 a:active{
@@ -311,18 +344,8 @@ a:active{
   text-decoration: none;
 }
 
-main{
-  float: none;
-  height: 100%;
-  width: 90%;
-  padding: 10px 10px 0 100px;
-  background-color: #A2B9E2;
-}
-.table_h{
-  background-color: #0A121F;
-  color: white;
-}
-
+/* Changed the list format for links
+   so there aren't any bullets.*/
 #no {
   list-style-type: none; /* Remove bullets */
   text-decoration: solid;
@@ -330,38 +353,28 @@ main{
   margin: 0; /* Remove margins */
 }
 
-Split{
-  min-height: 500vw; /* check this for later once everything is done*/
-  width: 100%;
-  display: table;
-  margin: 0px;
-  margin-bottom: 5vw;
-
-}
-main{display: table-cell}
-
-links{display: table-cell}
-
+/* footer boarder */
 footer{
   background-color: #091F34;
-  position: sticky;
+  position: sticky; /* Keeps footer at the bottom even when scrolled */
   bottom: 0%;
   left: 0;
   width: 100%;
   height:5vw;
-  font-family: impostographregular;
+  font-family: impostographregular; /* Imported Custom Font */
   font-size: 3vw;
   text-align: center;
   color: white;
 }
 
-/* table styling */
+/* Table Styling */
 
 .table_h{
   background-color: #0A121F;
   color: white;
 }
 
+/* Changes all even and odd cells in the table to corresponding colours with theme */
 tr:nth-child(even) {
   background-color: #CBE0F6;
 }
@@ -369,6 +382,7 @@ tr:nth-child(odd) {
   background-color: #BAD5F3;
 }
 
+/* Changed p1 to use Custom font */
 p1{
   font-family: impostographregular;
   font-size: 1.5vw;
