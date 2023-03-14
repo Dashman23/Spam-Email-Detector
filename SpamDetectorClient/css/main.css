@@ -328,7 +328,7 @@ main{
 /* Changed all hyperlink colours to best fits the
    the theme of the page.*/
 a:visited {
-  color: #C0CFEC;
+  color: #296ae3;
   text-decoration: none;
 }
 a:link {
@@ -336,7 +336,7 @@ a:link {
   text-decoration: none;
 }
 a:hover {
-  color: #EFF3FA;
+  color: #0059ff;
   text-decoration: none;
 }
 a:active{
