@@ -4,7 +4,6 @@ import com.spamdetector.domain.TestFile;
 
 import java.io.*;
 import java.lang.Math;
-import java.lang.reflect.Array;
 import java.util.*;
 
 
@@ -14,17 +13,25 @@ import java.util.*;
  */
 public class SpamDetector {
 
+    /**
+     * @param mainDirectory the directory that contains your train and test email folders
+     * @return List of TestFile objects containing the probability that each of the emails in the test
+     * folder are spam
+     */
     public List<TestFile> trainAndTest(File mainDirectory) throws FileNotFoundException {
 //      TODO: main method of loading the directories and files, training and testing the model
 
+        //storing each file directory in a file object
         File spamDir = new File(mainDirectory, "/train/spam");
         File ham1Dir = new File(mainDirectory, "/train/ham");
         File ham2Dir = new File(mainDirectory, "/train/ham2");
 
+        //collecting each training file in file arrays
         File[] spamFiles = spamDir.listFiles();
         File[] ham1Files = ham1Dir.listFiles();
         File[] ham2Files = ham2Dir.listFiles();
 
+        //combining the two ham files arrays into one array
         int count = 0;
         File[] hamFiles = new File[ham1Files.length + ham2Files.length];
         for (File ham1File : ham1Files) {
@@ -34,20 +41,31 @@ public class SpamDetector {
             hamFiles[count++] = ham2File;
         }
 
+        //creating a word map of all words in the spam and ham emails, and in how many emails they appear
+        //HashCount class has two instance variables, so we can return the count and hashmap
         HashCount spam = createWordMap(spamFiles);
         HashCount ham = createWordMap(hamFiles);
-        //HashCount class has two instance variables, so we can return the count and hashmap
+
+        //unpacking the variables from the custom class
         HashMap<String, Integer> trainSpamFreq = spam.hashMap;
         int spamFileCount = spam.count;
         HashMap<String, Integer> trainHamFreq = ham.hashMap;
         int hamFileCount = ham.count;
 
+        //calculating the probability a file is spam given a word
         HashMap<String, Double> ProbSpamGivenWord = calculateProbSpamGivenWord(trainSpamFreq, trainHamFreq, spamFileCount, hamFileCount);
 
+        //calculating the full probability that each file is spam, returning a list of testFile objects
         return calculateProbSpamGivenFile(mainDirectory, ProbSpamGivenWord);
     }
 
+    /**
+     * @param files a list of files for which
+     * @return a HashCount object, containing of all the words in a file array, and in how many files they appear in,
+     *  as well as how many files are in the array
+     */
     public HashCount createWordMap(File[] files) throws FileNotFoundException {
+        //this will be the full map for each directory, storing (spam or ham)
         HashMap<String, Integer> masterMap = new HashMap<>();
         int count = 0;
         for (File file : files) {
