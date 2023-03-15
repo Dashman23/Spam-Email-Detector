@@ -17,7 +17,7 @@ While implementing the naive Bayes' theorem, we made a few key observations. Fir
 in both files did not need to be filtered out, since they have little effect on our algorithm when calculating the 
 probability a file is spam. We also noticed that in our algorithm, words that only showed up in one category during 
 training, would produce non-meaningful results for the probability a file is spam, such as NaN or negative infinity, 
-since we use natural logarithms to balance out the probabilities. To counter this, we revalued these probabilities 
+since we use natural logarithms to balance out the probabilities. To avoid this issue, we revalued these probabilities 
 (which were previously 1 and 0), to 0.99999998 and 0.11 respectively (Note that values closer to 0 or 1 sway our algorithm more). The
 first probability is extremely close to 1 because if we encounter a word that has only ever been in spam files, then it 
 is unlikely ham files will suddenly start using this word, so we want to give these words a large weight in deciding the 
@@ -52,8 +52,8 @@ browser you prefer, which will open the webpage and display the results of our s
 ### External Resources
 
 Jackson was used as an external dependency aside from the default Jakarta dependencies.
-The ObjectMapper class was used to create JSON strings to be sent as Response objects to the client.
-The dependencies can be copied from the pom.xml file.
+The ObjectMapper class from Jackson was used to create JSON strings to be sent in Response objects to the client.
+The code for these dependencies can be copied from the 'pom.xml' file.
 
 [1] https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
 
