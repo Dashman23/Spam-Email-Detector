@@ -24,7 +24,7 @@ public class SpamResource {
     SpamDetector detector = new SpamDetector();
     ObjectMapper mapper = new ObjectMapper();
     List<TestFile> testFiles;
-    private final double threshold = 1;
+    private final double threshold = 50;
 
     public SpamResource() throws FileNotFoundException {
 //      DONE: load resources, train and test to improve performance on the endpoint calls

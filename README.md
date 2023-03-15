@@ -1,48 +1,53 @@
-# Assignment 01 - Spam Detector (Instructions)
+# Spam Detector - Assignment 1
 > Course: CSCI 2020U: Software Systems Development and Integration
 
-This is the template for your Assignment 01.
 
-## Overview
-You have become frustrated with all the advertisements in your inbox. You resolve to create a spam detector to filter out the spam. The spam detector will use a dataset of E-Mails (spam or otherwise) to train your program to recognize whether or not new E-Mails are spam. The program will use a unigram approach [1], where each word is counted and associated with whether or not the message is spam. Your program will calculate probabilities based on each word’s frequency [2]. Luckily, you have not emptied your spam folder or inbox in quite a while, so you have many samples to use to train your system. 
+## Project Information
+Have you ever tried to check your email only to see an inbox full of spam? Maybe you've looked for an important email 
+you were supposed to receive, only to find out it was incorrectly placed in your spam folder? For this assignment, we 
+created a program that detects spam emails using a naive Bayes' algorithm on a set of sample spam and 'ham' emails.
+The more emails you add into the 'train' folder, the better the final results will be. This program was built fully in 
+IntelliJ IDEA, by Daniel Zajac, David Garcia and Heisn Nithysingha.
 
-- Check the `Canvas/Assingments/Assignment 01` for more the detailed instructions.
+> Here is a screenshot of our application displaying the results of our spam detection process:
+![dashboard.png](dashboard.png)
 
-### SpamDetectorServer - Endpoints
+### Project Improvements
+While implementing the naive Bayes' theorem, we made a few key observations. Firstly, words that were extremely common 
+in both files did not need to be filtered out, since they have little effect on our algorithm when calculating the 
+probability a file is spam. We also noticed that in our algorithm, words that only showed up in one category during 
+training, would produce non-meaningful results for the probability a file is spam, such as NaN or negative infinity, 
+since we use natural logarithms to balance out the probabilities. To counter this, we revalued these probabilities 
+(which were previously 1 and 0), to 0.99999998 and 0.11 (Note that values closer to 0 or 1 sway our algorithm more). The
+first probability is extremely close to 1 because if we encounter a word that has only ever been in spam files, then it 
+is unlikely ham files will suddenly start using this word, so we want to give these words a large weight in deciding the 
+probability that a file is spam. On the other hand, if we encounter a word that we have only ever seen in ham files, 
+then there is still a chance that spam files will try to use these words in the future so that they are not detected as 
+easily by spam detectors such as ours. Due to this reasoning, we use a probability of 0.11 which sways our decision less 
+(but still a decent amount), so that these words do not 'overpower' our algorithm. When looking at the threshold used to 
+make the final decision between spam and ham, we realized that this is a surface level change, and should be left to the 
+user of this program to decide how strict the decision should be. We think that 50 (in a range from 0 to 100) is a good 
+threshold, however changing this does not affect the algorithm, so it can be changed at any point if you value a 
+different accuracy or precision.
 
-**Listing all the test files**
+We also included an 'About us' page, which has clickable links with our GitHub profiles attached. 
 
-This will return a `application/json` content type.
-- `http://localhost:8080/spamDetector-1.0/api/spam`
-See a sample of the response data:
-```
-[{"spamProbRounded":"0.00000","file":"00006.654c4ec7c059531accf388a807064363","spamProbability":5.901245803391957E-62,"actualClass":"Ham"},{"spamProbRounded":"0.00000","file":"00007.2e086b13730b68a21ee715db145522b9","spamProbability":2.800348071907053E-12,"actualClass":"Ham"},{"spamProbRounded":"0.00000","file":"00008.6b73027e1e56131377941ff1db17ff12","spamProbability":8.66861037294167E-14,"actualClass":"Ham"},{"spamProbRounded":"0.00000","file":"00009.13c349859b09264fa131872ed4fb6e4e","spamProbability":6.947265471550557E-12,"actualClass":"Ham"},{"spamProbRounded":"0.00000","file":"00010.d1b4dbbad797c5c0537c5a0670c373fd","spamProbability":1.8814467288977145E-7,"actualClass":"Ham"},{"spamProbRounded":"0.00039","file":"00011.bc1aa4dca14300a8eec8b7658e568f29","spamProbability":3.892844289937937E-4,"actualClass":"Ham"}]
-```
+### How to run
+To run this project, you must first install IntelliJ IDEA, GlassFish 7.0.0 (or similar versions) and git. 
+- First, navigate to our GitHub repository at
+https://github.com/OntarioTech-CS-program/w23-csci2020u-assignment01-garcia-nithysingha-zajac. Select the 'code' 
+dropdown menu, and copy the HTTPS link under the 'clone' tab.
+- Then, open any shell of your choice, and navigate to your desired directory, where you will clone the project.
+- type 'git clone *link*', where *link* represents the HTTPS link you copied from our repository. 
+- Now, open the clone repository in IntelliJ. You wil see a pop-up in the bottom right about a maven build script, 
+where you click the load button.
+- To run the local server, you must first configure glassfish. To do this, click 'Edit Configurations' in the top right 
+of IntelliJ, then click 'Add Configuration' and select GlassFish local. In the menu that pops up, type domain1 into the 
+domain entry box, then switch to the 'Deployment' tab and select 'spamDetector:war exploded'.
+- At this point, you can click the green arrow near the top right to run the local server.
+- When the server loads, navigate to the 'SpamDetectorClient' folder and open the 'index.html' file.
+- In this file, the UI in the top right will display buttons with your downloaded browsers' icons. Click on whichever 
+browser you prefer, which will open the webpage and display the results of our spam detector.
 
-**Calculate and get accuracy**
-This will return a `application/json` content type.
-- `http://localhost:8080/spamDetector-1.0/api/spam/accuracy`
-See a sample of the response data:
-```
-{"val": 0.87564}
-```
-
-**Calculate and get precision**
-This will return a `application/json` content type.
-- `http://localhost:8080/spamDetector-1.0/api/spam/precision`
-See a sample of the response data:
-```
-{"val": 0.56484}
-```
-### SpamDetectorServer - SpamDetector class
-
-Most of your programming will be in the `SpamDetector` class. This class will be responsible for reading the testing and training data files, training, and tesing the model.
-
-> Obs1. Feel free to create other helper classes as you see fit.
-> 
-> Obs2. You are not expected to get the exact same values as the ones shown in the samples.
-
-### References 
-[1] https://en.wikipedia.org/wiki/Bag-of-words_model 
-
-[2] https://en.wikipedia.org/wiki/Naive_Bayes_spam_filtering 
+### External Resources
+(will link jackson here)
